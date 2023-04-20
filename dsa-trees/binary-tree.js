@@ -16,60 +16,95 @@ class BinaryTree {
   /** minDepth(): return the minimum depth of the tree -- that is,
    * the length of the shortest path from the root to a leaf. */
 
-  minDepth() {
+  minDepth(node = this.root) {
+    if (!node) {
+      // if there is no node, then the depth is 0
+      return 0;
+    }
 
+    const leftDepth = this.minDepth(node.left);
+    const rightDepth = this.minDepth(node.right);
+
+    if (leftDepth === 0 && rightDepth === 0) {
+      return 1;
+    }
+
+    if (leftDepth === 0 || rightDepth === 0) {
+      return leftDepth + rightDepth + 1;
+    }
+
+    return (leftDepth < rightDepth ? leftDepth : rightDepth) + 1;
   }
 
   /** maxDepth(): return the maximum depth of the tree -- that is,
    * the length of the longest path from the root to a leaf. */
 
-  maxDepth() {
+  maxDepth(node = this.root) {
+    if (!node) {
+      // if there is no node, then the depth is 0
+      return 0;
+    }
 
+    const leftDepth = this.maxDepth(node.left);
+    const rightDepth = this.maxDepth(node.right);
+    return Math.max(leftDepth, rightDepth) + 1;
   }
 
   /** maxSum(): return the maximum sum you can obtain by traveling along a path in the tree.
    * The path doesn't need to start at the root, but you can't visit a node more than once. */
 
-  maxSum() {
+  maxSum(node = this.root) {
+    if (!node) {
+      return 0;
+    }
+    let leftMaxSum = this.maxSum(node.left);
+    let rightMaxSum = this.maxSum(node.right);
+    leftMaxSum = Math.max(leftMaxSum, 0);
+    rightMaxSum = Math.max(rightMaxSum, 0);
 
+    const treeMax = Math.max(node.val + leftMaxSum + rightMaxSum);
+    return treeMax;
   }
 
   /** nextLarger(lowerBound): return the smallest value in the tree
    * which is larger than lowerBound. Return null if no such value exists. */
 
   nextLarger(lowerBound) {
+    let curr = this.root;
+    let prev = null;
 
+    while (curr) {
+      if (curr.val > lowerBound) {
+        prev = curr;
+        curr = curr.left;
+      } else {
+        curr = curr.right;
+      }
+    }
+    return prev ? prev.val : null;
   }
 
   /** Further study!
    * areCousins(node1, node2): determine whether two nodes are cousins
    * (i.e. are at the same level but have different parents. ) */
 
-  areCousins(node1, node2) {
-
-  }
+  areCousins(node1, node2) {}
 
   /** Further study!
    * serialize(tree): serialize the BinaryTree object tree into a string. */
 
-  static serialize() {
-
-  }
+  static serialize() {}
 
   /** Further study!
    * deserialize(stringTree): deserialize stringTree into a BinaryTree object. */
 
-  static deserialize() {
-
-  }
+  static deserialize() {}
 
   /** Further study!
    * lowestCommonAncestor(node1, node2): find the lowest common ancestor
    * of two nodes in a binary tree. */
 
-  lowestCommonAncestor(node1, node2) {
-    
-  }
+  lowestCommonAncestor(node1, node2) {}
 }
 
 module.exports = { BinaryTree, BinaryTreeNode };

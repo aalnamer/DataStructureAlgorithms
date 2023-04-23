@@ -43,37 +43,145 @@ class BinarySearchTree {
   /** insertRecursively(val): insert a new node into the BST with value val.
    * Returns the tree. Uses recursion. */
 
-  insertRecursively(val) {}
+  insertRecursively(val, current = this.root) {
+    if (this.root === null) {
+      this.root = new Node(val);
+      return this;
+    }
+    if (val < current.val) {
+      if (current.left === null) {
+        current.left = new Node(val);
+        return this;
+      }
+      return this.insertRecursively(val, current.left);
+    } else {
+      if (current.right === null) {
+        current.right = new Node(val);
+        return this;
+      }
+      return this.insertRecursively(val, current.right);
+    }
+  }
 
   /** find(val): search the tree for a node with value val.
    * return the node, if found; else undefined. Uses iteration. */
 
-  find(val) {}
+  find(val) {
+    let current = this.root;
+    let found = false;
+    if (val === current.val) return current;
+
+    while (current && !found) {
+      if (val < current.val) {
+        current = current.left;
+      } else if (val > current.val) {
+        current = current.right;
+      } else {
+        found = true;
+      }
+    }
+    if (!found) return undefined;
+    return current;
+  }
 
   /** findRecursively(val): search the tree for a node with value val.
    * return the node, if found; else undefined. Uses recursion. */
 
-  findRecursively(val) {}
+  findRecursively(val, current = this.root) {
+    if (current === null) {
+      return undefined;
+    }
+    if (this.root === null) {
+      this.root = new Node(val);
+    }
+    if (val < current.val) {
+      return this.findRecursively(val, current.left);
+    } else if (val > current.val) {
+      return this.findRecursively(val, current.right);
+    } else {
+      return current;
+    }
+  }
 
   /** dfsPreOrder(): Traverse the array using pre-order DFS.
    * Return an array of visited nodes. */
 
-  dfsPreOrder() {}
+  dfsPreOrder() {
+    let data = [];
+    let current = this.root;
+
+    function traverse(node) {
+      data.push(node.val);
+      node.left && traverse(node.left);
+      node.right && traverse(node.right);
+    }
+    traverse(current);
+    return data;
+  }
 
   /** dfsInOrder(): Traverse the array using in-order DFS.
    * Return an array of visited nodes. */
 
-  dfsInOrder() {}
+  dfsInOrder() {
+    let data = [];
+    let current = this.root;
+
+    function traverse(node) {
+      if (node.left) {
+        traverse(node.left);
+      }
+      data.push(node.val);
+      if (node.right) {
+        traverse(node.right);
+      }
+    }
+    traverse(current);
+    return data;
+  }
 
   /** dfsPostOrder(): Traverse the array using post-order DFS.
    * Return an array of visited nodes. */
 
-  dfsPostOrder() {}
+  dfsPostOrder() {
+    let data = [];
+    let current = this.root;
+
+    function traverse(node) {
+      if (node.left) {
+        traverse(node.left);
+      }
+      if (node.right) {
+        traverse(node.right);
+      }
+      data.push(node.val);
+    }
+    traverse(current);
+    return data;
+  }
 
   /** bfs(): Traverse the array using BFS.
    * Return an array of visited nodes. */
 
-  bfs() {}
+  bfs() {
+    let data = [];
+    let queue = [];
+    let current = this.root;
+
+    queue.push(current);
+
+    while (queue.length) {
+      current = queue.shift();
+      data.push(current.val);
+
+      if (current.left) {
+        queue.push(current.left);
+      }
+      if (current.right) {
+        queue.push(current.right);
+      }
+    }
+    return data;
+  }
 
   /** Further Study!
    * remove(val): Removes a node in the BST with the value val.
